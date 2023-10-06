@@ -19,47 +19,8 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-        cache: maven
-
-    - name: Run CodeQl tests
-      run: |
-        cd Projeto_S107
-        mvn clean test site
-
-    - name: Upload test artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: test-reports
-        path: Projeto_S107/target/site/
-
-  empacotar:
-    needs: test
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-
-    - name: Set up JDK 17
-      uses: actions/setup-java@v2
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-        cache: maven
-
-    - name: Build with codeQL
-      run: |
-        cd Projeto_S107-GitHub-Actions
-        mvn clean install
-
-    - name: Upload JAR artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: jar
-        path: Projeto_S107/target/*.jar
 
   codeql-analysis:
-    needs: empacotar
     runs-on: ubuntu-latest
 
     steps:
@@ -70,23 +31,14 @@ jobs:
       uses: github/codeql-action/init@v2
       with:
         languages: java
-        
+
+    - name: Cache CodeQL analysis results
+      uses: actions/cache@v2
+      with:
+        path: .github/workflows/codeql.yml
+        key: codeql-results-${{ runner.os }}
+
     - name: Analyze code with CodeQL
       uses: github/codeql-action/analyze@v2
       with:
         category: "/language:java"
-
-  notificacao:
-    runs-on: ubuntu-latest
-
-    env:
-      EMAIL_LIST: luca.felipe@ges.inatel
-
-    steps:
-    - name: Execute commands
-      uses: actions/checkout@v2
-      with:
-        ref: ${{ github.event.pull_request.head.sha }}
-        
-    - name: Run shell script
-      run: sh scripts/shell.sh
