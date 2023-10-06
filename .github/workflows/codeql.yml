@@ -18,15 +18,15 @@ jobs:
           POSTGRES_USER: seu_usuario
           POSTGRES_PASSWORD: sua_senha
           POSTGRES_DB: seu_banco_de_dados
-          POSTGRES_HOST: localhost 
-          POSTGRES_PORT: 5432  
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: 5432
         run: |
           echo "POSTGRES_USER=${POSTGRES_USER}" >> $GITHUB_ENV
           echo "POSTGRES_PASSWORD=${POSTGRES_PASSWORD}" >> $GITHUB_ENV
           echo "POSTGRES_DB=${POSTGRES_DB}" >> $GITHUB_ENV
           echo "POSTGRES_HOST=${POSTGRES_HOST}" >> $GITHUB_ENV
           echo "POSTGRES_PORT=${POSTGRES_PORT}" >> $GITHUB_ENV
-  
+
       - name: Verificar as variáveis de ambiente
         run: |
           echo "POSTGRES_USER: $POSTGRES_USER"
@@ -34,7 +34,7 @@ jobs:
           echo "POSTGRES_DB: $POSTGRES_DB"
           echo "POSTGRES_HOST: $POSTGRES_HOST"
           echo "POSTGRES_PORT: $POSTGRES_PORT"
-    
+
       - name: Checkout repository
         uses: actions/checkout@v2
 
@@ -66,3 +66,11 @@ jobs:
         uses: github/codeql-action/analyze@v2
         with:
           category: "/language:java"
+
+      - name: Run PostgreSQL Commands
+        run: |
+          psql -h localhost -U postgres -d postgres -c "INSERT * FROM sua_tabela;"
+          psql -h localhost -U postgres -d postgres -c "SELECT * FROM sua_tabela;"
+          psql -h localhost -U postgres -d postgres -c "UPDATE * FROM sua_tabela;"
+          psql -h localhost -U postgres -d postgres -c "DELETE * FROM sua_tabela;"
+
