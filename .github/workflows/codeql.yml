@@ -2,52 +2,56 @@ name: Java com CodeQL Analysis
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
 
 jobs:
   test:
     runs-on: ubuntu-latest
 
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-      
-    - name: Set up JDK 17
-      uses: actions/setup-java@v2
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-
-    - name: Set up PostgreSQL
-      uses: docker://postgres:latest
-      env:
+    services:
+      postgres:
+        image: postgres:latest
+        env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: postgres
-      with:
-          args: -e POSTGRES_USER -e POSTGRES_PASSWORD -e POSTGRES_DB
+        ports:
+          - 5432:5432
+        options: --health-cmd "pg_isready -U postgres" --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: 'temurin'
 
   codeql-analysis:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v2
-      with:
-        languages: java
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: java
 
-    - name: Cache CodeQL analysis results
-      uses: actions/cache@v2
-      with:
-        path: .github/workflows/codeql.yml
-        key: codeql-results-${{ runner.os }}
+      - name: Cache CodeQL analysis results
+        uses: actions/cache@v2
+        with:
+          path: .github/workflows/codeql.yml
+          key: codeql-results-${{ runner.os }}
 
-    - name: Analyze code with CodeQL
-      uses: github/codeql-action/analyze@v2
-      with:
-        category: "/language:java"
+      - name: Analyze code with CodeQL
+        uses: github/codeql-action/analyze@v2
+        with:
+          category: "/language:java"
