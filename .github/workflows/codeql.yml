@@ -19,7 +19,7 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-        cache: codeQL
+        cache: maven
 
     - name: Run CodeQl tests
       run: |
@@ -45,7 +45,7 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-        cache: codeQL
+        cache: maven
 
     - name: Build with codeQL
       run: |
@@ -80,7 +80,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      EMAIL_LIST: luca.felipe@ges.inatel.com
+      EMAIL_LIST: luca.felipe@ges.inatel
 
     steps:
     - name: Execute commands
