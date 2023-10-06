@@ -23,7 +23,7 @@ jobs:
 
     - name: Run CodeQl tests
       run: |
-        cd Projeto_S107-GitHub-Actions
+        cd Projeto_S107
         mvn clean test site
 
     - name: Upload test artifacts
