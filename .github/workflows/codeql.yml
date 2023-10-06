@@ -23,14 +23,14 @@ jobs:
 
     - name: Run CodeQl tests
       run: |
-        cd Projeto_S107-GitHub-Actions
+        cd Projeto_S107
         mvn clean test site
 
     - name: Upload test artifacts
       uses: actions/upload-artifact@v2
       with:
         name: test-reports
-        path: Projeto_S107-GitHub-Actions/target/site/
+        path: Projeto_S107/target/site/
 
   empacotar:
     needs: test
@@ -56,7 +56,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: jar
-        path: Projeto_S107-GitHub-Actions/target/*.jar
+        path: Projeto_S107/target/*.jar
 
   codeql-analysis:
     needs: empacotar
