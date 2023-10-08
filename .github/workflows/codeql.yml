@@ -84,6 +84,17 @@ jobs:
           psql -h localhost -U postgres -d postgres -c "SELECT * FROM sua_tabela;"
           psql -h localhost -U postgres -d postgres -c "UPDATE * FROM sua_tabela;"
           psql -h localhost -U postgres -d postgres -c "DELETE * FROM sua_tabela;"
+      
+      - name: Handle CodeQL Analysis Error
+        if: failure()
+        run: |
+          echo "CodeQL analysis failed. Setting analysis status to failed..."
+          curl -X PUT -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          -H "Accept: application/vnd.github.v3+json" \
+          -H "Content-Type: application/json" \
+          -d '{"state": "failure", "description": "CodeQL analysis failed"}' \
+          "https://api.github.com/repos/${{ github.repository }}/code-scanning/analysis/status"
+        
           
   notificacao:
     runs-on: ubuntu-latest
