@@ -1,16 +1,19 @@
 name: Java com CodeQL Analysis
 
 on:
-  push:
-    branches:
-      - main
   pull_request:
     branches:
-      - main
+      - main    
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
+  analyze:
+    name: Analyze
+    runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
+    timeout-minutes: ${{ (matrix.language == 'swift' && 120) || 360 }}
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
 
     steps:
       - name: Configurar ambiente do PostgreSQL e Java
@@ -34,7 +37,7 @@ jobs:
           echo "POSTGRES_DB: $POSTGRES_DB"
           echo "POSTGRES_HOST: $POSTGRES_HOST"
           echo "POSTGRES_PORT: $POSTGRES_PORT"
-
+          
       - name: Checkout repository
         uses: actions/checkout@v2
 
@@ -43,6 +46,12 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
+
+      - name: Upload de artefatos
+        uses: actions/upload-artifact@v3
+        with:
+          name: jar
+          path: Projeto_S107/Projeto_BD_POO/target/*.jar
 
   codeql-analysis:
     runs-on: ubuntu-latest
@@ -75,13 +84,11 @@ jobs:
           psql -h localhost -U postgres -d postgres -c "DELETE * FROM sua_tabela;"
           
   notificacao:
-
     runs-on: ubuntu-latest
-        
     env:
       EMAIL_LIST: luca.felipe@ges.inatel.br
-        
     steps:
       - name: Executa comandos
         uses: actions/checkout@v3
       - run: sh Projeto_S107/script/shell.sh
+
