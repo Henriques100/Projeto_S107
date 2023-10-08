@@ -22,7 +22,7 @@ jobs:
     steps:
       - name: Testes SQL
         run: |
-          cd Projeto_S107/Projeto_BD_POO
+          cd Projeto_S107
           mvn clean test site    
 
   build:
