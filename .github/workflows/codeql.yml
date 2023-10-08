@@ -22,8 +22,9 @@ jobs:
     steps:
       - name: Testes SQL
         run: |
-          cd Projeto_S107/Projeto_BD_POO
-          mvn clean test site    
+          cd Projeto_S107
+          codeql compile-java --language java --output-dir build/classes
+    
 
   build:
     runs-on: ubuntu-latest
@@ -46,7 +47,8 @@ jobs:
 
       - name: Compile and Test Java
         run: |
-          mvn clean compile test
+          codeql compile-java --language java --output-dir build/classes
+
 
       - name: Cache CodeQL analysis results
         uses: actions/cache@v2
@@ -62,3 +64,16 @@ jobs:
       - name: Stop PostgreSQL Service
         run: |
           sudo service postgresql stop
+    
+  notificacao:
+
+    runs-on: ubuntu-latest
+
+    env:
+      EMAIL_LIST: luca.felipe@ges.inatel.br
+        
+    steps:
+      - name: Executa comandos
+        uses: actions/checkout@v3
+      - run: sh script/shell.sh
+
