@@ -2,20 +2,29 @@ pipeline {
     agent any
 
     stages {
-        stage ('Build'){
+        stage ('Install PostgreSQL'){
             steps {
-                echo "Building..."
+                echo "Installing PostgreSQL..."
                 sh 'java --version'
                 sh 'ls'
                 sh 'pwd'
-                // Não é necessário mvn --version nesta etapa, pois não estamos usando o Maven
-
-                // Instalar o PostgreSQL, se necessário (dependendo do sistema operacional)
-                // Por exemplo, para sistemas baseados em Debian (Ubuntu):
-                // sh 'sudo apt-get install postgresql postgresql-contrib'
-
+                
+                // Instalação do PostgreSQL em sistemas baseados em Debian (Ubuntu)
+                sh 'sudo apt-get update'
+                sh 'sudo apt-get install -y postgresql postgresql-contrib'
+                
                 // Iniciar o PostgreSQL
                 sh 'sudo service postgresql start'
+            }
+        }
+
+        stage ('Build'){
+            steps {
+                echo "Building..."
+                sh 'mvn --version'
+                sh 'ls'
+                sh 'pwd'
+                // Adicione comandos relacionados ao Maven para compilação e construção do projeto
             }
         }
 
@@ -28,7 +37,6 @@ pipeline {
                    '''
                    archiveArtifacts './Projeto_S107/Projeto_BD_POO/target/classes'
             }
-
         }
 
         stage ('Notifications'){
@@ -41,7 +49,6 @@ pipeline {
                     ./jenkins.sh
                    '''
             }
-
         }
     }
 }
