@@ -22,7 +22,7 @@ jobs:
     steps:
       - name: Testes SQL
         run: |
-          cd Projeto_S107
+          cd Projeto_S107/Projeto_BD_POO/test
           codeql compile-java --language java --output-dir build/classes
     
 
