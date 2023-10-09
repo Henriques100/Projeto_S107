@@ -26,14 +26,14 @@ jobs:
       - name: Test Database Connection
         run: |
           echo "Waiting for PostgreSQL to start..."
-          while ! pg_isready -h localhost -U seu_usuario -d seu_banco_de_dados -t 1; do
+          while ! pg_isready -h localhost -U usuario -d BD_POO -t 1; do
             sleep 1
           done
 
       - name: Testes SQL
         run: |
           cd Projeto_S107
-          psql -h localhost -U seu_usuario -d seu_banco_de_dados -a -f ../Projeto_S107/BD_POO.sql
+          psql -h localhost -U usuario -d BD_POO -a -f ../Projeto_S107/BD_POO.sql
 
   build-and-analyze:
     runs-on: ubuntu-latest
@@ -105,7 +105,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      EMAIL_LIST: luca.felipe@ges.inatel.br
+      EMAIL_LIST: luca.felipe@ges.inatel.br raphael.h@ges.inatel.br
         
     steps:
       - name: Execute commands
