@@ -62,7 +62,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      EMAIL_LIST: luca.felipe@ges.inatel.br
+      EMAIL_LIST: luca.felipe@ges.inatel.br raphael.h@ges.inatel.br
         
     steps:
       - name: Execute commands
