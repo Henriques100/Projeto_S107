@@ -49,8 +49,8 @@ jobs:
       - name: Upload de artefatos
         uses: actions/upload-artifact@v2
         with:
-          name: jar
-          path: Projeto_S107/Projeto_BD_POO/target/*.classes
+          name: classes
+          path: Projeto_S107/Projeto_BD_POO/target/classes/
 
       - name: Upload Test Reports
         uses: actions/upload-artifact@v2
