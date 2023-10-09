@@ -14,7 +14,7 @@ jobs:
         image: postgres:latest
         env:
           POSTGRES_USER: usuario
-          POSTGRES_PASSWORD: postgres
+          POSTGRES_PASSWORD: postgres 
           POSTGRES_DB: BD_POO
         ports:
           - 5432:5432
@@ -26,7 +26,7 @@ jobs:
       - name: Test Database Connection
         run: |
           echo "Waiting for PostgreSQL to start..."
-          while ! pg_isready -h localhost -U seu_usuario -d seu_banco_de_dados -t 1; do
+          while ! pg_isready -h localhost -U usuario -d BD_POO -t 1; do
             sleep 1
           done
 
