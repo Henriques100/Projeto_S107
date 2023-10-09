@@ -49,14 +49,14 @@ jobs:
       - name: Upload de artefatos
         uses: actions/upload-artifact@v2
         with:
-          name: classes
-          path: Projeto_S107/Projeto_BD_POO/target/classes/
+          name: java
+          path: Projeto_S107/Projeto_BD_POO/src/main/test
 
       - name: Upload Test Reports
         uses: actions/upload-artifact@v2
         with:
-          name: test-reports
-          path: Projeto_S107/target/surefire-reports/
+          name: test
+          path: Projeto_S107/Projeto_BD_POO/src/main/test
 
   notification:
     runs-on: ubuntu-latest
