@@ -13,9 +13,9 @@ jobs:
       postgres:
         image: postgres:latest
         env:
-          POSTGRES_USER: usuario
-          POSTGRES_PASSWORD: postgres 
-          POSTGRES_DB: BD_POO
+          POSTGRES_USER: seu_usuario
+          POSTGRES_PASSWORD: sua_senha 
+          POSTGRES_DB: seu_banco_de_dados
         ports:
           - 5432:5432
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
@@ -26,14 +26,14 @@ jobs:
       - name: Test Database Connection
         run: |
           echo "Waiting for PostgreSQL to start..."
-          while ! pg_isready -h localhost -U usuario -d BD_POO -t 1; do
+          while ! pg_isready -h localhost -U seu_usuario -d seu_banco_de_dados -t 1; do
             sleep 1
           done
 
       - name: Testes SQL
         run: |
           cd Projeto_S107
-          psql -h localhost -U usuario -d BD_POO -a -f ../Projeto_S107/BD_POO.sql
+          psql -h localhost -U seu_usuario -d seu_banco_de_dados -a -f ../Projeto_S107/BD_POO.sql
 
   build-and-analyze:
     runs-on: ubuntu-latest
@@ -46,7 +46,8 @@ jobs:
         uses: github/codeql-action/init@v2
         with:
           languages: java
-
+        env:
+          CODEQL_ACTION_TOKEN: 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
       - name: Setup Java
         uses: actions/setup-java@v2
         with:
