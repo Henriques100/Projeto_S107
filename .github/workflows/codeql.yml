@@ -13,9 +13,9 @@ jobs:
       postgres:
         image: postgres:latest
         env:
-          POSTGRES_USER: seu_usuario
-          POSTGRES_PASSWORD: sua_senha
-          POSTGRES_DB: seu_banco_de_dados
+          POSTGRES_USER: usuario
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: BD_POO
         ports:
           - 5432:5432
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
@@ -23,10 +23,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       
+      - name: Test Database Connection
+        run: |
+          echo "Waiting for PostgreSQL to start..."
+          while ! pg_isready -h localhost -U seu_usuario -d seu_banco_de_dados -t 1; do
+            sleep 1
+          done
+
       - name: Testes SQL
         run: |
           cd Projeto_S107
-          psql -U seu_usuario -d seu_banco_de_dados -a -f ../Projeto_S107/BD_POO.sql
+          psql -h localhost -U usuario -d BD_POO -a -f ../Projeto_S107/BD_POO.sql
 
   build-and-analyze:
     runs-on: ubuntu-latest
