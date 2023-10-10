@@ -50,7 +50,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: java
-          path: Projeto_S107/Projeto_BD_POO/src/main/test
+          path: Projeto_S107/Projeto_BD_POO/Projeto_BD_POO/src/main/test
 
       - name: Upload Test Reports
         uses: actions/upload-artifact@v2
