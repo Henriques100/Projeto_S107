@@ -56,7 +56,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: test
-          path: Projeto_S107/Projeto_BD_POO/src/main/test
+          path: Projeto_S107/Projeto_BD_POO/Projeto_BD_POO/src/main/test
 
   notification:
     runs-on: ubuntu-latest

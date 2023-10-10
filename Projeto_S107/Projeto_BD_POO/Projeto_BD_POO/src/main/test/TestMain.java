@@ -88,4 +88,45 @@ class TestMain {
         Organizador deletedOrganizador = bd_organizador.searchOrganizador(3);
         Assertions.assertNull(deletedOrganizador);
     }
+
+    @Test
+    @DisplayName("Teste de Pesquisa e Atualização")
+    void testarProcurarEAtualizarEDeletar() {
+        Organizador organizador = new Organizador();
+        organizador.setId(90);
+        organizador.setNomeEvento("Festa");
+        organizador.setNome("Jobson");
+        organizador.setCPF("999.999.987-01");
+        organizador.setIdade(25);
+        bd_organizador.insertOrganizador(organizador);
+
+        Participante participante = new Participante();
+        participante.setId(100);
+        participante.setNome("Maria");
+        participante.setCPF("228.999.234-19");
+        participante.setIdade(23);
+        participante.setOrganizador_idOrganizador(90);
+        bd_participante.insertParticipante(participante);
+
+        // Realize uma pesquisa (search) em Organizador
+        Organizador org = bd_organizador.searchOrganizador(90);
+        Assertions.assertNotNull(org);
+        Assertions.assertEquals("Jobson", org.getNome());
+
+        // Realize uma atualização (update) em Participante
+        participante.setNome("Roberta");
+        bd_participante.updateParticipante(participante, 0);
+
+        // Verifique se a atualização foi bem-sucedida
+        Participante updatedParticipante = bd_participante.searchParticipante(2, 0);
+        Assertions.assertNotNull(updatedParticipante);
+        Assertions.assertEquals("Roberta", updatedParticipante.getNome());
+
+        // Realize uma exclusão (delete) em Organizador
+        bd_organizador.deleteOrganizador(90);
+
+        // Verifique se a exclusão foi bem-sucedida
+        Organizador deletedOrganizador = bd_organizador.searchOrganizador(90);
+        Assertions.assertNull(deletedOrganizador);
+    }
 }
